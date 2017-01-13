@@ -1,0 +1,42 @@
+<form action="#" method="post">
+	<select name="Sex">
+		<option value="M">Male</option>
+		<option value="F">Female</option>
+	</select>
+	<select name="Year">
+		<option value="2017">Season</option>
+	</select>
+	<input type="submit" name="submit" value="Set Event Filters" />
+</form>
+
+<?php
+	$var1 = "F";
+	$var2 = 2017;
+	if(isset($_POST['submit'])){
+		$var1 = $_POST['Sex'];  // Storing Selected Value In Variable
+		$var2 = $_POST['Season'];
+	}
+	$shortcode = '[wpdatatable id=3 var1="'.$var1.'" var2="'.$var2.'" table_view=regular]';
+    echo do_shortcode($shortcode); 
+?>
+
+	<form action="#" method="post">
+		<select name="Sex">
+			<option value="F">Female</option>
+			<option value="M">Male</option>
+		</select>
+		<select name="Season">
+			<option value="2017">2017</option>
+		</select>
+		<input type="submit" name="submit" value="Get Selected Values" />
+	</form>
+
+	<?php
+	$selected_val = "F";
+	if(isset($_POST['submit'])){
+		$selected_val = $_POST['Sex'];  // Storing Selected Value In Variable
+		echo "You have selected :" .$selected_val;  // Displaying Selected Value
+		$shortcode = '[wpdatatable id=6 var1="'.$selected_val.'" table_view=regular]';
+    	echo do_shortcode($shortcode); 
+	}
+	?>
