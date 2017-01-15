@@ -1,11 +1,12 @@
 CREATE OR REPLACE VIEW EVENT_RESULTS AS
 SELECT 
-      (SELECT event_name
-        FROM RACE_EVENT
-        WHERE event_id=e.parent_event_id) as 'Event',
-      e.parent_event_id, e.event_name, e.season, m.nensa_num, s.ussa_num, 
-      r.Finish_Place, r.Full_Name, s.last, r.Birth_Year, e.sex, r.Division, 
-      m.age_group, m.club_name, r.Race_Time, r.Race_Points,r.USSA_Result
+      e.event_name as 'Event', e.season as 'Season', 
+      m.nensa_num as 'NENSA', s.ussa_num as 'USSA', 
+      r.Finish_Place as 'Finish', r.Full_Name as 'Name', 
+      r.Birth_Year as 'Birth Year', r.Division as 'Division', 
+      m.age_group as 'Age Group', m.club_name as 'Club', 
+      r.Race_Time as 'Race Time', r.Race_Points as 'Points',
+      r.USSA_Result as 'USSA Result'
 FROM 
     Race_Results r
         INNER JOIN

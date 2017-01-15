@@ -40,7 +40,10 @@
 </head>
 
 <body>
-  <div style="border:1px dashed #333333; width:300px; margin:0 auto; padding:10px;">
+  <div style="border:1px dashed #333333; width:500px; margin:0 auto; padding:10px;">
+
+	</br><strong>Load Member Skier CSV Data</strong></br>
+  </br><strong>Default setting clobbers the table and reloads from scratch!  Adjust setting in code.</strong></br>
 
 		<form name="import" method="post" enctype="multipart/form-data">
 	    <input type="file" name="file" /><br />
