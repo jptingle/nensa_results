@@ -22,6 +22,7 @@ There are 4 groups of files
 
 5) In order to create and view a Wordpress Results page, the current results page must have it's template changed to the results template.  This is accessible form a dropdown on the lower left of the Wordpress page edit page.  The wpdatatable shortcode will be processed via the template.  The content of the page can be left blank to start.  The title will appear above the select menus.
 
+6) Add the varchar field 'club_name' to member_skier.  Check all fields for allow null against screen shots.  Can't remember which ones I changed.  Please note here or in an email.'
 
 
 
