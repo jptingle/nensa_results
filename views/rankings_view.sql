@@ -1,5 +1,6 @@
 CREATE OR REPLACE VIEW MEMBER_SEASON_TOP_RESULTS AS
-SELECT s.season, m.nensa_num, m.first as 'First Name', m.last as 'Last Name', e.Division, s.age_group,
+SELECT s.season, m.nensa_num, m.first as 'First Name', m.last as 'Last Name', 
+        m.sex as 'Sex', e.Division, s.age_group,
         COUNT(e.USSA_Result) as '# Races',
         MIN(e.USSA_Result) as 'Best Race Results',
         (SELECT USSA_Result
@@ -31,7 +32,7 @@ GROUP BY s.id
 ORDER BY Best_USSA_Result;
 
 CREATE OR REPLACE VIEW MEMBER_SEASON_RANKINGS AS
-SELECT `season`, `nensa_num`, `First Name`, `Last Name`, `Division`, `age_group`, `# Races`, 
+SELECT `season`, `nensa_num`, `First Name`, `Sex`, `Last Name`, `Division`, `age_group`, `# Races`, 
 `Best Race Results`, `Best_USSA_Result`, `2ndBest_USSA_Result`, `3rdBest_USSA_Result`,
 (Best_USSA_Result+2ndBest_USSA_Result)/2 AS 'Avg Top 2', 
 (Best_USSA_Result+2ndBest_USSA_Result+3rdBest_USSA_Result)/3 AS 'Avg Top 3'
