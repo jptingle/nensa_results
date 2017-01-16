@@ -72,6 +72,12 @@
 			{
 				$event_id = (int)$_POST['EventID']; 
 				$file = $_FILES['file']['tmp_name'];
+
+				if ($_FILES['type'] != 'text/csv') {
+					echo 'ERROR: The import format must be CSV. ';
+					exit;
+				}
+
 				$handle = fopen($file, "r");
 				$c = 0;
 				$sql = null;

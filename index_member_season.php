@@ -58,11 +58,18 @@
 		if(isset($_POST["submit"]))
 		{
 			$file = $_FILES['file']['tmp_name'];
+
+			if ($_FILES['file']['type'] != 'text/csv') {
+				echo 'ERROR: The import format must be CSV. ';
+				exit;
+			}
+
 			$handle = fopen($file, "r");
 			$c = 0;
+			$e = 0;
+			$d = 0;
 			$sql = null;
-		  fgetcsv($handle, 1000, ",");
-	    fgetcsv($handle, 1000, ",");
+			$correct_header = false;
 
 	    $reload = false;
 
@@ -72,6 +79,14 @@
 			}
 			while(($filesop = fgetcsv($handle, 1000, ",")) !== false)
 			{
+
+				if ($correct_header == false && (string)$filesop[0] == 'Account ID' && (string)$filesop[11] == 'USSA Number (C)') {
+					$correct_header = true;
+					continue;
+				} elseif ($correct_header == false) {
+					continue;
+				}
+
 				$age_season = NULL;
 				$nensa_num = (int)$filesop[0]; // Account ID
 				$dob_year = (int)$filesop[4]; // DOB Year
@@ -81,12 +96,13 @@
 				$season = 2017;
 				$member_status = 'Active';
 
-				$result = $conn->query("SELECT member_id FROM MEMBER_SKIER WHERE nensa_num='$nensa_num'");
+				$result = $conn->query("SELECT member_id, club_name FROM MEMBER_SKIER WHERE nensa_num='$nensa_num'");
 				
         if ($result->num_rows > 0) {
         	// output data of each row
           while($row = $result->fetch_assoc()) {
             $member_id = (int)$row['member_id'];
+            $club_name = (string)$row['club_name'];
           }
         } else {
           continue;
@@ -126,6 +142,10 @@
 	        continue;
 				}
 	      $c = $c + 1;
+			}
+
+			if ($c == 0 && $correct_header == false) {
+					echo "ERROR: Wrong row or column format. ";
 			}
 
 			echo "You imported ". $c ." records successfully. There were ". $e ." errors and ". $d ." duplicates";

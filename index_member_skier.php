@@ -56,13 +56,17 @@
 			if(isset($_POST["submit"]))
 			{
 				$file = $_FILES['file']['tmp_name'];
+
+				if ($_FILES['file']['type'] != 'text/csv') {
+					echo 'ERROR: The import format must be CSV. ';
+					exit;
+				}
+
 				$handle = fopen($file, "r");
 				$c = 0;
 				$e = 0;
 				$d = 0;
 				$sql = null;
-			  fgetcsv($handle);
-		    fgetcsv($handle);
 
 		    $reload = false;
 
@@ -71,17 +75,27 @@
 					$sql = mysqli_query($conn, $sql_string);
 				}
 
+				$row = 0;
 				while(($filesop = fgetcsv($handle, 10000)) !== false)
 				{
+					if ($row == 0 && (string)$filesop[0] == 'Account ID' && (string)$filesop[5] == 'City' && (string)$filesop[9] == 'Club Name') {
+						$row+=1;
+						continue;
+					} elseif ($row == 0) {
+						echo "ERROR: Wrong row or column format. ";
+						break;
+					}
 					$nensa_num = (int)$filesop[0]; // Account ID
 					$first = mysqli_real_escape_string($conn, $filesop[2]); // First Name
 					$last = mysqli_real_escape_string($conn, $filesop[3]); // Last Name(F)
+					$sex = mysqli_real_escape_string($conn, $filesop[4]);
+					$city = mysqli_real_escape_string($conn, $filesop[5]); // City
+					$state = mysqli_real_escape_string($conn, $filesop[6]); // State				
+					$ussa_num = (int)$filesop[7]; // USSA Number(C)
+					$club_name = (string)$filesop[9]; // Club Name
 					$dob_day = (string)$filesop[10]; // DOB Day
 					$dob_month = (string)$filesop[11]; //DOB Month
 					$dob_year = (string)$filesop[12]; // DOB Year
-					$city = mysqli_real_escape_string($conn, $filesop[4]); // City
-					$state = mysqli_real_escape_string($conn, $filesop[5]); // State
-					$ussa_num = (int)$filesop[6]; // USSA Number(C)
 
 	        if (strlen($dob_day) == 1) {
 						$dob_day = '0'.$dob_day;
@@ -104,7 +118,7 @@
 	          }
 	        }
 
-	        $sql_string = "INSERT INTO MEMBER_SKIER (nensa_num, ussa_num, first, last, birthdate, birth_year, city, state) VALUES ('$nensa_num', NULLIF('$ussa_num',0), '$first', '$last', '$birthdate', '$dob_year', '$city', '$state')";
+	        $sql_string = "INSERT INTO MEMBER_SKIER (nensa_num, ussa_num, first, last, sex, birthdate, birth_year, city, state, club_name) VALUES ('$nensa_num', NULLIF('$ussa_num',0), '$first', '$last', '$sex', '$birthdate', '$dob_year', '$city', '$state', '$club_name')";
 					$sql = mysqli_query($conn, $sql_string);
 
 					//  The most likely failure is a duplicate entry with ussa_num
