@@ -1,6 +1,6 @@
 <?php
 /**
- * Template name: U16Rankings
+ * Template name: U20Rankings
  *
  * @package llorix-one-lite
  */
@@ -38,7 +38,7 @@
 
 			</main><!-- #main -->
 
-			<?php llorix_display_rankings_table( 10 ); ?>
+			<?php llorix_display_rankings_table( 11 ); ?>
 
 		</div><!-- #primary -->
 

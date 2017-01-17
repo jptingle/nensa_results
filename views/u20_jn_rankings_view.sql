@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW MEMBER_SEASON_U23_JN_RANKINGS AS
+CREATE OR REPLACE VIEW MEMBER_SEASON_U20_JN_RANKINGS AS
 SELECT s.season as 'Season', m.nensa_num as 'NENSA', m.first as 'First_Name', m.last as 'Last_Name', 
         m.sex as 'Sex', e.Division as 'Division', s.age_group as 'Age_Group',
         COUNT(e.USSA_Result) as '#_Races',
@@ -59,6 +59,6 @@ FROM
     RACE_RESULTS e ON e.member_season_id = s.id
         INNER JOIN 
     MEMBER_SKIER m ON m.member_id = s.member_id
-WHERE e.USSA_RESULT <> 0 AND (s.age_group='U20' OR s.age_group='U23')
+WHERE e.USSA_RESULT <> 0 AND (s.age_group='U20' OR s.age_group='U18')
 GROUP BY s.id;
 
