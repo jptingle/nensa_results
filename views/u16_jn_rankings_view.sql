@@ -56,10 +56,3 @@ FROM
     MEMBER_SKIER m ON m.member_id = s.member_id
 WHERE e.USSA_RESULT <> 0 AND s.age_group='U16' 
 GROUP BY s.id;
-
-CREATE OR REPLACE VIEW MEMBER_SEASON_RANKINGS AS
-SELECT `Season`, `NENSA`, `First Name`, `Sex`, `Last Name`, `Division`, `Age Group`, `# Races`, 
-`Best Race Result`, `Best USSA Result`, `2ndBest USSA Result`, `3rdBest USSA Result`,
-(Best_USSA_Result+2ndBest_USSA_Result)/2 AS 'Avg Top 2', 
-(Best_USSA_Result+2ndBest_USSA_Result+3rdBest_USSA_Result)/3 AS 'Avg Top 3'
-FROM MEMBER_SEASON_TOP_RESULTS;
