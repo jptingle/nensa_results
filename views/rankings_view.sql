@@ -20,7 +20,34 @@ SELECT s.season, m.nensa_num, m.first as 'First Name', m.last as 'Last Name',
             WHERE member_season_id=s.id and USSA_Result <> 0
             GROUP BY USSA_Result HAVING COUNT(*) > 0
             ORDER BY USSA_Result ASC
-            LIMIT 2,1) as '3rdBest_USSA_Result'
+            LIMIT 2,1) as '3rdBest_USSA_Result',
+        (((SELECT USSA_Result
+            FROM RACE_RESULTS
+            WHERE member_season_id=s.id AND USSA_Result <> 0
+            GROUP BY USSA_Result HAVING COUNT(*) > 0
+            ORDER BY USSA_Result ASC
+            LIMIT 0,1)+(SELECT USSA_Result
+            FROM RACE_RESULTS
+            WHERE member_season_id=s.id and USSA_Result <> 0
+            GROUP BY USSA_Result HAVING COUNT(*) > 0
+            ORDER BY USSA_Result ASC
+            LIMIT 1,1))/2) AS 'Avg Top 2',
+        (((SELECT USSA_Result
+            FROM RACE_RESULTS
+            WHERE member_season_id=s.id AND USSA_Result <> 0
+            GROUP BY USSA_Result HAVING COUNT(*) > 0
+            ORDER BY USSA_Result ASC
+            LIMIT 0,1)+(SELECT USSA_Result
+            FROM RACE_RESULTS
+            WHERE member_season_id=s.id and USSA_Result <> 0
+            GROUP BY USSA_Result HAVING COUNT(*) > 0
+            ORDER BY USSA_Result ASC
+            LIMIT 1,1)+(SELECT USSA_Result
+            FROM RACE_RESULTS
+            WHERE member_season_id=s.id and USSA_Result <> 0
+            GROUP BY USSA_Result HAVING COUNT(*) > 0
+            ORDER BY USSA_Result ASC
+            LIMIT 2,1))/2) AS 'Avg Top 3'
 FROM 
     MEMBER_SEASON s
         INNER JOIN 
