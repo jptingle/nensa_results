@@ -49,7 +49,7 @@
 				} 
 
 				$season_array = array(2017);
-        $gender_array = array('F','M');
+        			$gender_array = array('F','M');
 
 				echo "<form method=post name=f1>";
 				echo "<select name='season' ><option value=''>Select season</option>";
@@ -76,12 +76,11 @@
 				echo "</br></br>";
 				echo "<input type=submit value=Submit>";
 				echo "</form>";
-				if(isset($_POST['age_group'])){
+				if(isset($_POST['gender'])){
 					$season = $_POST['season'];
 					$gender = $_POST['gender'];
-					$age_group = $_POST['age_group'];  // Storing Selected Value In Variable
-					$shortcode = '[wpdatatable id=9 VAR2="'.$gender.'" VAR1="'.$season.'" table_view=regular]';
-          echo "</br><hr>";
+					$shortcode = '[wpdatatable id=11 VAR1="'.$gender.'" VAR2="'.$season.'" table_view=regular]';
+          				echo "</br><hr>";
 			    echo do_shortcode($shortcode); 
 				}
 			?>
