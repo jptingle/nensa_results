@@ -1,5 +1,6 @@
 CREATE OR REPLACE VIEW MEMBER_SEASON_U16_JN_RANKINGS AS
-SELECT s.season as 'Season', e.ussa_num as 'USSA_num', m.nensa_num as 'NENSA', e.full_name as 'Athletes_Name', 
+SELECT s.season as 'Season', e.ussa_num as 'USSA_num', 
+        m.nensa_num as 'NENSA', e.full_name as 'Athletes_Name', 
         m.sex as 'Sex', s.club_name as 'Club_Name', s.age_group as 'Age_Group',
         COUNT(e.USSA_Result) as '#_Races',
         MIN(e.USSA_Result) as 'Best_Race_Result',
