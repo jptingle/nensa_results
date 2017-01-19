@@ -60,6 +60,12 @@
 				<option value=1955>1955</option>
 				<option value=1956>1956</option>
 				<option value=1957>1957</option>
+				<option value=1961>1961</option>
+				<option value=1962>1962</option>
+				<option value=1963>1963</option>
+				<option value=1964>1964</option>
+				<option value=1965>1965</option>
+				<option value=1966>1966</option>
 			</select>
 	  	<input type="file" name="file" /><br />
 	    <input type="submit" name="submit" value="Submit Race Results" />
@@ -81,19 +87,39 @@
 				$handle = fopen($file, "r");
 				$c = 0;
 				$sql = null;
-			  fgetcsv($handle, 1000, ",");
-			  fgetcsv($handle, 1000, ",");
-			  fgetcsv($handle, 1000, ",");
+				$u16 = false;
+			  $correct_header = false;
 				while(($filesop = fgetcsv($handle, 1000, ",")) !== false)
 				{
-					$finish_place = $filesop[0];
-					$athlete_id = $filesop[1];  // column name in the csv file
-					$full_name = $filesop[2];
-					$birth_year = $filesop[3];
-					$division = (string)$filesop[4];
-					$race_time = (string)$filesop[5];
-					$points = $filesop[6];
-					$ussa_results = $filesop[7];
+					if ($correct_header == false && (((string)$filesop[0] == 'FinishPlace') || (string)$filesop[1] == 'FinishPlace')) {
+						if ((string)$filesop[1] == 'FinishPlace') { $u16 = true; }
+						$correct_header = true;
+						continue;
+					} elseif ($correct_header == false) {
+						continue;
+					}
+
+					if ($u16 == false) {
+						$wcp = 0;
+						$finish_place = $filesop[0];
+						$athlete_id = $filesop[1];  // column name in the csv file
+						$full_name = $filesop[2];
+						$birth_year = $filesop[3];
+						$division = (string)$filesop[4];
+						$race_time = (string)$filesop[5];
+						$points = $filesop[6];
+						$ussa_results = $filesop[7];
+                                        } else {
+						$wcp = $filesop[0];
+						$finish_place = $filesop[1];
+						$athlete_id = $filesop[2];  // column name in the csv file
+						$full_name = $filesop[3];
+						$birth_year = $filesop[4];
+						$division = (string)$filesop[5];
+						$race_time = (string)$filesop[6];
+						$points = $filesop[7];
+						$ussa_results = $filesop[8];
+					}
 					//$event_id = 1951;
 
 					$result = $conn->query("SELECT member_id FROM MEMBER_SKIER WHERE ussa_num='$athlete_id'");
@@ -125,7 +151,7 @@
 		      }
 
 					// rules will go here
-					$sql = mysqli_query($conn, "INSERT INTO RACE_RESULTS (member_season_id, ussa_num, Finish_Place, Full_Name, Birth_Year, Race_Points, USSA_Result, event_id, Division, Race_Time) VALUES (NULLIF('$member_season_id',0), '$athlete_id', '$finish_place', '$full_name', '$birth_year', '$points','$ussa_results', '$event_id', '$division', '$race_time')");
+					$sql = mysqli_query($conn, "INSERT INTO RACE_RESULTS (world_cup_points, member_season_id, ussa_num, Finish_Place, Full_Name, Birth_Year, Race_Points, USSA_Result, event_id, Division, Race_Time) VALUES (NULLIF('$wcp',0), NULLIF('$member_season_id',0), '$athlete_id', '$finish_place', '$full_name', '$birth_year', '$points','$ussa_results', '$event_id', '$division', '$race_time')");
 		      
 		      if ($sql == 0) {
 				    $text = "member_season_id: ".$member_season_id." error: ".$conn->error;
