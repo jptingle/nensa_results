@@ -1,5 +1,68 @@
 # nensa_results
+Updates for 1/19/2017
 
+1) Import has been updated to pull in world_cup_points column if there for the U16.  
+
+2) You will need to add a World_Cup_Points column to the events table. INT 5 or so.  Allow null.
+
+3) The U16 rankings view has swapped the USSA_Points for World_Cup_Points.  There is no inclusion
+   of USSA_results.  Let me know if you also want them.
+
+4) There is NO ranking column as of yet.  I do not have a SQL solution.  If we want to add column(s) to 
+   the season table, we can do so to accomodate averages and rankings.  I can then run a PHP ranking
+   calculation script.  This can be triggered with every data import.
+
+5) The wordpress template files include the main config and 4 theme files. Place them in the correct folder
+   as indicated by the directory structure of source code.
+
+6) There are 2 types of template.  One is the "original" where I hardcoded the datatable index.  Those are
+   template-u16rankings and template-u20rankings.  Yes it's u18/u20 but the template is just called u20.
+   The newer version of the template used an advanced custom field to get the index.  That is called 
+   template-results.  It can be used for both the U16 and the U18/20.
+
+7) If you choose to use template-results, then you need to install the Advanced Custom Filed plugin
+		and create a field per the screen shots in the config directory.
+
+8) The screen shots for the rankings datatables have now been added.
+
+9)  This is the wpdatatables query for the U18/20
+
+SELECT member_season_u20_jn_rankings.Season,
+       member_season_u20_jn_rankings.NENSA,
+       member_season_u20_jn_rankings.Athletes_Name,
+       member_season_u20_jn_rankings.Club_Name,
+       member_season_u20_jn_rankings.Sex,
+       member_season_u20_jn_rankings.USSA_num,
+       member_season_u20_jn_rankings.Age_Group,
+       member_season_u20_jn_rankings.#_Races,
+       member_season_u20_jn_rankings.Best_Race_Result,
+       member_season_u20_jn_rankings.Best_USSA_Result,
+       member_season_u20_jn_rankings.2ndBest_USSA_Result,
+       member_season_u20_jn_rankings.3rdBest_USSA_Result,
+       member_season_u20_jn_rankings.Avg_2_Best,
+       member_season_u20_jn_rankings.Avg_4_Best
+FROM member_season_u20_jn_rankings
+WHERE member_season_u20_jn_rankings.Avg_2_Best<>0 AND member_season_u20_jn_rankings.Sex='%VAR1%'
+
+10) This is the datatables query for U16
+
+SELECT member_season_u16_jn_rankings.NENSA,
+       member_season_u16_jn_rankings.USSA_num,
+       member_season_u16_jn_rankings.Athletes_Name,
+       member_season_u16_jn_rankings.Sex,
+       member_season_u16_jn_rankings.Club_Name,
+       member_season_u16_jn_rankings.#_Races,
+       member_season_u16_jn_rankings.Best_World_Cup_Points,
+       member_season_u16_jn_rankings.Best_World_Cup_Points,
+       member_season_u16_jn_rankings.2ndBest_World_Cup_Points,
+       member_season_u16_jn_rankings.3rdBest_World_Cup_Points,
+       member_season_u16_jn_rankings.Avg_2_Best,
+       member_season_u16_jn_rankings.Avg_3_Best
+FROM member_season_u16_jn_rankings
+WHERE member_season_u16_jn_rankings.Avg_2_Best<>0 AND member_season_u16_jn_rankings.Sex='%VAR1%'
+
+
+------------------------------------------------------------------
 There are 4 groups of files
 
 1) The sql for the views.  
